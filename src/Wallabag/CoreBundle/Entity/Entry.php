@@ -266,7 +266,7 @@ class Entry
     {
         $this->content = $content;
         $this->readingTime = Tools::getReadingTime($content);
-        $this->domainName = parse_url($this->url, PHP_URL_HOST);
+        $this->domainName = Tools::getHostname(parse_url($this->url, PHP_URL_HOST));
 
         return $this;
     }

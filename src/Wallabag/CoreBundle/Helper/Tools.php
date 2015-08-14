@@ -130,4 +130,20 @@ final class Tools
     {
         return floor(str_word_count(strip_tags($text)) / 200);
     }
+
+
+    /**
+    * Returns the hostname of the url
+    * for example google.com for www.google.com
+    *
+    * @param $url
+    *
+    * @return string
+    */
+    public static function getHostname($url)
+    {
+        $parts = explode(".", $url);
+
+        return (array_key_exists(count($parts) - 2, $parts) ? $parts[count($parts) - 2] : "").".".$parts[count($parts) - 1];
+    }
 }

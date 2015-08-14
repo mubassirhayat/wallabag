@@ -241,7 +241,7 @@ class EntryControllerTest extends WallabagCoreTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
-    public function testFilterOnUnreadeView()
+    public function testFilterOnReadingTime()
     {
         $this->logInAs('admin');
         $client = $this->getClient();
@@ -258,5 +258,28 @@ class EntryControllerTest extends WallabagCoreTestCase
         $crawler = $client->submit($form, $data);
 
         $this->assertCount(1, $crawler->filter('div[class=entry]'));
+    }
+
+    public function testFilterOnDomainName()
+    {
+        $this->logInAs('admin');
+        $client = $this->getClient();
+
+        $crawler = $client->request('GET', '/unread/list');
+        $form = $crawler->filter('button[id=submit-filter]')->form();
+        $data = array(
+            'entry_filter[domainName]' => 'monde'
+        );
+
+        $crawler = $client->submit($form, $data);
+        $this->assertCount(1, $crawler->filter('div[class=entry]'));
+
+        $form = $crawler->filter('button[id=submit-filter]')->form();
+        $data = array(
+            'entry_filter[domainName]' => 'wallabag'
+        );
+
+        $crawler = $client->submit($form, $data);
+        $this->assertCount(0, $crawler->filter('div[class=entry]'));
     }
 }
