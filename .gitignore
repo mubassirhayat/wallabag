@@ -38,4 +38,4 @@ data/assets/*
 data/db/wallabag*.sqlite
 
 # Capistrano
-/config/
+/config
