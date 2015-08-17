@@ -259,4 +259,26 @@ class EntryControllerTest extends WallabagCoreTestCase
 
         $this->assertCount(1, $crawler->filter('div[class=entry]'));
     }
+
+    public function testFilterOnCreationDate()
+    {
+        $this->logInAs('admin');
+        $client = $this->getClient();
+        $crawler = $client->request('GET', '/unread/list');
+
+        $form = $crawler->filter('button[id=submit-filter]')->form();
+        $data = array(
+            'entry_filter[createdAt][left_date]' => date('d/m/Y')
+        );
+
+        $crawler = $client->submit($form, $data);
+        $this->assertCount(4, $crawler->filter('div[class=entry]'));
+
+        $form = $crawler->filter('button[id=submit-filter]')->form();
+        $data = array(
+            'entry_filter[createdAt][right_date]' => date('d/m/Y')
+        );
+        $crawler = $client->submit($form, $data);
+        $this->assertCount(0, $crawler->filter('div[class=entry]'));
+    }
 }
